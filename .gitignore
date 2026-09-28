@@ -1,0 +1,10 @@
+# Never publish manuscript PDFs or local assistant files.
+*.[pP][dD][fF]
+.claude/
+.codex/
+.agents/
+.env
+.env.*
+_site/
+__pycache__/
+.DS_Store

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adaptive Reference Refinement for Physics-based Motion Retargeting</title>
+  <meta name="description" content="Project page for 'Adaptive Reference Refinement for Physics-based Motion Retargeting' (Pacific Graphics 2026 / Computer Graphics Forum)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --fg:#222222; --fg-2:#505050; --muted:#707070; --line:#e5e5e5; --accent:#333333; --ph-bg:#f7f7f7; --sans: "Inter", Arial, sans-serif; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:72px; }
+    body { margin:0; background:#ffffff; color:var(--fg); font:15px/1.8 var(--sans); -webkit-font-smoothing:antialiased; }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { text-decoration:underline; text-underline-offset:4px; }
+    a:focus-visible, button:focus-visible { outline:2px solid var(--accent); outline-offset:5px; }
+    .section-nav { position:sticky; top:0; z-index:20; background:#ffffff; border-bottom:1px solid var(--line); }
+    .section-nav-inner { display:flex; justify-content:center; gap:30px; max-width:880px; margin:auto; padding:0 16px; }
+    .section-nav a { flex:0 0 auto; padding:15px 0 12px; border-bottom:2px solid transparent; color:var(--muted); font-size:12px; line-height:1.8; }
+    .section-nav a:hover { color:var(--fg); text-decoration:none; }
+    .section-nav a[aria-current="location"] { color:var(--accent); border-bottom-color:var(--accent); }
+    @media(max-width:600px) { .section-nav-inner { gap:18px; justify-content:flex-start; overflow-x:auto; padding:0 16px; } .section-nav a { font-size:11px; } }
+    .content { padding:0 28px; }
+    .wrap { max-width:880px; margin:auto; }
+    .hero { padding:92px 0 54px; text-align:center; }
+    .venue { color:var(--muted); font-size:11px; letter-spacing:.11em; text-transform:uppercase; margin-bottom:28px; }
+    .venue i { display:inline-block; width:3px; height:3px; background:var(--muted); border-radius:50%; margin:0 10px 3px; }
+    h1 { max-width:850px; margin:0 auto 28px; font-family:Georgia, 'Times New Roman', serif; font-size:clamp(34px,4.4vw,52px); font-weight:400; line-height:1.14; letter-spacing:-.035em; text-wrap:balance; }
+    .authors { display:flex; justify-content:center; gap:28px; margin:0 0 3px; font-size:15px; color:var(--fg); }
+    .affiliation { font-size:13px; color:var(--muted); margin-bottom:23px; }
+    .lab-link { display:block; width:210px; max-width:65%; margin:0 auto 26px; }
+    .lab-link img { display:block; width:100%; height:auto; }
+    #results > h3 { margin-top:40px; margin-bottom:12px; }
+    #results .method-points { margin-top:32px; row-gap:24px; }
+    #results .method-points h3 { margin-bottom:12px; }
+    .links { display:flex; justify-content:center; }
+    .btn { display:inline-flex; align-items:center; gap:9px; padding:7px 16px; border:1px solid #cccccc; border-radius:4px; font-size:12px; color:var(--accent); }
+    .btn:hover { background:var(--ph-bg); text-decoration:none; }
+    .btn svg { width:14px; height:14px; }
+    section { padding:54px 0; border-top:1px solid var(--line); }
+    h2 { font-size:23px; line-height:1.3; font-weight:500; letter-spacing:-.04em; margin:0 0 26px; }
+    h3 { font-size:15px; font-weight:600; margin:28px 0 8px; line-height:1.5; }
+    p { margin:0 0 16px; color:var(--fg-2); }
+    p:last-child { margin-bottom:0; }
+    strong { font-weight:600; color:var(--fg); }
+    .key-points { margin:0 0 18px; padding-left:20px; color:var(--fg-2); }
+    .key-points li { padding-left:3px; margin-bottom:8px; }
+    .key-points li:last-child { margin-bottom:0; }
+    .key-points li::marker { color:var(--muted); font-size:.8em; }
+    .abstract .lead { font-size:14px; line-height:1.9; }
+    .method-points { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+    .method-points h3 { margin-top:8px; }
+    figure { margin:0 0 25px; }
+    #method figure { padding-top:12px; margin-bottom:37px; }
+    .method-figure-art { margin-bottom:12px; padding:16px; border:1px solid var(--line); border-radius:12px; background:var(--ph-bg); isolation:isolate; overflow:hidden; }
+    .method-figure-art img { mix-blend-mode:multiply; }
+    figure img, figure video { display:block; width:100%; height:auto; }
+    figcaption, .slide-caption { margin-top:12px; font-size:12px; color:var(--muted); line-height:1.6; }
+    .placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; width:100%; aspect-ratio:16/7; background:var(--ph-bg); border:1px solid var(--line); color:var(--muted); font-size:12px; text-align:center; padding:20px; }
+    .ph-title { color:#666666; font-size:14px; }
+    .table-wrap { overflow-x:auto; margin:18px 0 12px; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:11px 14px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap; font-variant-numeric:tabular-nums; }
+    th:first-child,td:first-child { text-align:left; }
+    thead th { color:var(--muted); font-size:11px; font-weight:500; border-top:1px solid #b8b8b8; }
+    td { color:var(--fg-2); }
+    tr.ours td { background:#f5f5f5; color:#292929; font-weight:500; }
+    .table-note { font-size:12px; color:var(--muted); }
+    .carousel { position:relative; margin:20px 0 28px; padding-bottom:45px; }
+    .carousel-viewport { overflow:hidden; }
+    .carousel-track { display:flex; transition:transform .3s ease; }
+    .slide { flex:0 0 100%; min-width:0; }
+    .slide video, .slide .placeholder { width:100%; aspect-ratio:8/3; }
+    .slide video { display:block; object-fit:contain; background:#ffffff; }
+    .limitation-video { margin:20px 0 0; }
+    .limitation-video video { aspect-ratio:16/9; border:1px solid var(--line); border-radius:8px; background:#ffffff; }
+    .slide-caption { padding-right:10px; }
+    .carousel-nav { position:absolute; bottom:0; }
+    .carousel-nav.prev { right:44px; }
+    .carousel-nav.next { right:0; }
+    button { font:inherit; cursor:pointer; }
+    .nav-btn { display:flex; align-items:center; justify-content:center; width:34px; height:34px; border:1px solid #d0d0d0; border-radius:3px; color:var(--fg); background:transparent; }
+    .nav-btn:hover { background:var(--ph-bg); }
+    .nav-btn svg { width:16px; height:16px; }
+    .carousel-footer { position:absolute; bottom:6px; left:0; display:flex; align-items:center; gap:16px; }
+    .dots { display:flex; gap:2px; }
+    .dot { width:24px; height:24px; padding:0; border:0; background:transparent; display:grid; place-items:center; }
+    .dot::after { content:''; width:5px; height:5px; border-radius:50%; background:#d0d0d0; }
+    .dot.active::after { background:var(--accent); }
+    .counter { color:var(--muted); font-size:11px; }
+    .reference-list { margin:0; padding-left:24px; font-size:13px; color:var(--fg-2); }
+    .reference-list li { padding-left:6px; margin-bottom:20px; scroll-margin-top:80px; }
+    .reference-list li:last-child { margin-bottom:0; }
+    .reference-list a { font-weight:500; text-decoration:underline; text-underline-offset:3px; }
+    .reference-meta { display:block; color:var(--muted); margin-top:3px; font-size:12px; }
+    .citation { font-size:.8em; white-space:nowrap; }
+    .bib { position:relative; background:var(--ph-bg); border:1px solid var(--line); }
+    pre { overflow-x:auto; margin:0; padding:48px 22px 22px; font:11px/1.8 ui-monospace,monospace; color:var(--fg-2); }
+    .copy { position:absolute; right:12px; top:10px; padding:3px 9px; border:1px solid #d0d0d0; border-radius:3px; background:transparent; color:var(--muted); font-size:11px; }
+    @media(min-width:1000px) { .abstract { display:grid; grid-template-columns:140px 1fr; gap:32px; } }
+    @media(max-width:600px) { .content { padding:0 22px; } .hero { padding:54px 0 38px; } .venue { font-size:9px; letter-spacing:.04em; } .venue i { margin-left:5px; margin-right:5px; } section { padding:40px 0; } .method-points { grid-template-columns:1fr; gap:8px; } .authors { gap:20px; font-size:14px; } th,td { padding:10px; } h2 { font-size:21px; } }
+    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .carousel-track { transition:none; } }
+  </style>
+</head>
+<body>
+<nav class="section-nav" aria-label="Page sections">
+  <div class="section-nav-inner">
+    <a href="#abstract">Abstract</a>
+    <a href="#method">Method</a>
+    <a href="#results">Results</a>
+    <a href="#conclusion">Conclusion</a>
+    <a href="#references">References</a>
+    <a href="#bibtex">BibTeX</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- ================= SIDEBAR ================= -->
+
+
+  <!-- ================= CONTENT ================= -->
+  <div class="content">
+
+
+
+    <div class="wrap">
+
+      <header class="hero">
+        <div class="venue">Pacific Graphics 2026 <i></i> Computer Graphics Forum</div>
+        <h1>Adaptive Reference Refinement for Physics-based Motion Retargeting</h1>
+        <p class="authors">
+          <span>Seungbin Jeong</span>
+          <span>Young Min Kim</span>
+        </p>
+        <p class="affiliation">Seoul National University</p>
+        <a class="lab-link" href="https://3d.snu.ac.kr/" target="_blank" rel="noopener noreferrer" aria-label="Visit the 3D Vision Laboratory website"><img src="assets/laboratory-logo.png" alt="Seoul National University 3D Vision Laboratory" /></a>
+
+        <div class="links">
+          <!-- TODO: Add the journal page URL as href and remove aria-disabled when available. -->
+          <a class="btn" aria-disabled="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Paper
+          </a>
+          
+          
+        </div>
+
+
+      </header>
+
+      <main>
+
+        <!-- ================= ABSTRACT ================= -->
+        <section id="abstract" class="abstract">
+          <h2>Abstract</h2>
+          <p class="lead">
+            Physics-based character control for high-dimensional humanoid motion requires reference motion-capture data to guide stable
+            training of the reinforcement learning (RL) policy. However, the motion dynamics of the reference trajectory and the control
+            target may differ in terms of mass, torque limits, and morphology. Conventional retargeting compensates for offsets based
+            on kinematic structure, without considering real-world dynamics such as gravity, contact forces, and torque control, and the
+            resulting motion fails to robustly guide policy training for the control target. We propose a motion refinement network that
+            learns to automatically adjust retargeted results to be physically plausible, reflecting the non-linear relationship arising from
+            the dynamic interplay between different skeleton structures and the environment. As the policy directly learns to track refined
+            references in physical simulation, the resulting motions are free of physical artifacts, such as foot sliding, ground penetration,
+            and implausible joint configurations, which are frequently observed in retargeting results applying inverse kinematics. While
+            concurrent training of motion refinement and the RL policy often diverges, we introduce a warming-up scheme that initially
+            trains the policy using only a fixed refinement network, then gradually introduces refinement offsets. The offsets are then
+            selectively applied to the retargeted motion only when a substantial deviation is required. Experiments show that our method
+            consistently improves physical plausibility over retargeting baselines using inverse kinematics, and further improves tracking
+            performance particularly when combined with baselines that produce reasonably reliable initial references. Our method also
+            generalizes robustly to retargeting across extremely different morphologies and physical properties, including dramatic changes
+            in limb lengths and carrying of excessively heavy payloads.
+          </p>
+        </section>
+
+        <!-- ================= METHOD ================= -->
+        <section id="method">
+          <h2>Method</h2>
+
+          <figure>
+            <div class="method-figure-art"><img src="assets/figure2.png" width="2274" height="831" alt="System overview: source motion is retargeted and adjusted by a refinement network; a policy tracks the refined reference in simulation, with motion fidelity and tracking losses guiding refinement." loading="lazy" /></div>
+            <figcaption>The refinement network adjusts the reference using the character’s current state. The policy tracks the refined motion in simulation.</figcaption>
+          </figure>
+
+          <ul class="key-points">
+            <li><strong>Online refinement.</strong> Adapt retargeted references to the target character’s dynamics during RL training.</li>
+            <li><strong>State-aware offsets.</strong> Predict root-pose and joint-angle adjustments from the reference motion and the simulated character’s state.</li>
+          </ul>
+          <div class="method-points">
+            <div><h3>Preserve the motion, improve tracking</h3><ul class="key-points">
+            <li>Balance motion fidelity with trackability.</li>
+            <li>Keep offsets small and smooth over time.</li>
+          </ul></div>
+            <div><h3>Stabilize joint training</h3><ul class="key-points">
+            <li><strong>Warm-up.</strong> Train the policy before enabling refinement.</li>
+            <li><strong>Early termination.</strong> Use the original reference to limit drift from the source motion.</li>
+          </ul></div>
+          </div>
+        </section>
+
+        <!-- ================= RESULTS ================= -->
+        <section id="results">
+          <h2>Results</h2>
+
+          <ul class="key-points">
+            <li><strong>Dataset and robots.</strong> AMASS <a class="citation" href="#ref-amass" aria-label="Reference 1: AMASS">[1]</a> motions; Unitree H1-2 and G1.</li>
+            <li><strong>Baselines.</strong> ProtoMotions <a class="citation" href="#ref-protomotions" aria-label="Reference 2: ProtoMotions">[2]</a>, GMR <a class="citation" href="#ref-gmr" aria-label="Reference 3: GMR">[3]</a>, and OmniRetarget <a class="citation" href="#ref-omniretarget" aria-label="Reference 4: OmniRetarget">[4]</a>.</li>
+          </ul>
+
+          
+          <div class="carousel" id="result-carousel" aria-roledescription="carousel" aria-label="Motion comparisons">
+            <div class="carousel-viewport">
+              <div class="carousel-track" id="carousel-track"></div>
+            </div>
+            <div class="carousel-nav prev">
+              <button class="nav-btn" id="carousel-prev" aria-label="Previous video">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+            </div>
+            <div class="carousel-nav next">
+              <button class="nav-btn" id="carousel-next" aria-label="Next video">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+            <div class="carousel-footer">
+              <div class="dots" id="carousel-dots"></div>
+              <div class="counter" id="carousel-counter" aria-live="polite"></div>
+            </div>
+          </div>
+
+          <h3>More physically plausible motion</h3>
+          <ul class="key-points">
+            <li>Eliminates ground penetration across the evaluated baselines on both robots.</li>
+            <li>Reduces foot floating.</li>
+          </ul>
+          <h3>Better tracking with reliable references</h3>
+          <ul class="key-points">
+            <li><strong>GMR:</strong> tracking success improves from 64.5% to 71.1%.</li>
+            <li><strong>OmniRetarget:</strong> tracking success improves from 62.1% to 72.3%.</li>
+            <li><strong>ProtoMotions:</strong> gains remain limited.</li>
+          </ul>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Method (H1-2)</th><th>Success (%)</th><th>Pos. err (cm)</th><th>Rot. err (rad)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>ProtoMotions</td><td>51.3</td><td>35.6</td><td>0.35</td></tr>
+                <tr class="ours"><td>ProtoMotions + Ours</td><td>52.2</td><td>34.4</td><td>0.36</td></tr>
+                <tr><td>GMR</td><td>64.5</td><td>21.8</td><td>0.35</td></tr>
+                <tr class="ours"><td>GMR + Ours</td><td>71.1</td><td>20.1</td><td>0.33</td></tr>
+                <tr><td>OmniRetarget</td><td>62.1</td><td>28.1</td><td>0.40</td></tr>
+                <tr class="ours"><td>OmniRetarget + Ours</td><td>72.3</td><td>22.2</td><td>0.36</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note">H1-2 test split; mean over 10 evaluation rollouts. Higher success and lower errors are better.</p>
+          <div class="method-points">
+            <div><h3>Adaptation to extreme changes</h3><ul class="key-points">
+            <li>Tested on an H1-2 with half-length legs and a 20 kg backpack.</li>
+            <li>Enables stable training where the unrefined reference fails.</li>
+          </ul></div>
+            <div><h3>A trade-off in motion fidelity</h3><ul class="key-points">
+            <li>Participants rated source similarity higher than OmniRetarget, but lower than GMR.</li>
+            <li>Better physical plausibility does not always mean greater perceived similarity.</li>
+          </ul></div>
+          </div>
+        </section>
+
+        <!-- ================= CONCLUSION ================= -->
+        <section id="conclusion">
+          <h2>Conclusion</h2>
+          <ul class="key-points">
+            <li>Jointly adapting the reference and control policy improves physical plausibility.</li>
+            <li>Refinement helps accommodate large changes in body proportions and payload.</li>
+          </ul>
+          <h3>Limitations</h3>
+          <ul class="key-points">
+            <li>Output quality depends on the initial reference.</li>
+            <li>Refinement adds roughly 20% to training time.</li>
+            <li>Brief foot floating can remain in difficult motions.</li>
+          </ul>
+          <figure class="limitation-video">
+            <video src="assets/videos/limitation.mp4" poster="assets/videos/limitation.jpg" width="1920" height="1080" controls muted loop playsinline preload="metadata" aria-label="Limitation example comparing the source motion and our result"></video>
+            <figcaption>Failure case: source motion (left) and our result (right).</figcaption>
+          </figure>
+        </section>
+
+        <section id="references">
+          <h2>References</h2>
+          <ol class="reference-list">
+            <li id="ref-amass">
+              <a href="https://amass.is.tue.mpg.de/">AMASS: Archive of Motion Capture as Surface Shapes.</a>
+              <span class="reference-meta">N. Mahmood, N. Ghorbani, N. F. Troje, G. Pons-Moll, and M. J. Black. ICCV, 2019, pp. 5442–5451.</span>
+            </li>
+            <li id="ref-protomotions">
+              <a href="https://github.com/NVLabs/ProtoMotions/">ProtoMotions3: An Open-Source Framework for Humanoid Simulation and Control.</a>
+              <span class="reference-meta">C. Tessler, Y. Jiang, X. B. Peng, E. Coumans, Y. Shi, H. Zhang, D. Rempe, G. Chechik, and S. Fidler. 2025.</span>
+            </li>
+            <li id="ref-gmr">
+              <a href="https://arxiv.org/abs/2510.02252">Retargeting Matters: General Motion Retargeting for Humanoid Motion Tracking.</a>
+              <span class="reference-meta">J. P. Araujo, Y. Ze, P. Xu, J. Wu, and C. K. Liu. arXiv:2510.02252, 2025.</span>
+            </li>
+            <li id="ref-omniretarget">
+              <a href="https://arxiv.org/abs/2509.26633">OmniRetarget: Interaction-Preserving Data Generation for Humanoid Whole-Body Loco-Manipulation and Scene Interaction.</a>
+              <span class="reference-meta">L. Yang, X. Huang, Z. Wu, A. Kanazawa, P. Abbeel, C. Sferrazza, C. K. Liu, R. Duan, and G. Shi. arXiv:2509.26633, 2025.</span>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ================= BIBTEX ================= -->
+        <section id="bibtex">
+          <h2>BibTeX</h2>
+          <div class="bib">
+            <button class="copy" id="copy-bib" type="button">Copy</button>
+<pre id="bib-text">@article{jeong2026adaptive,
+  title   = {Adaptive Reference Refinement for Physics-based Motion Retargeting},
+  author  = {Jeong, Seungbin and Kim, Young Min},
+  journal = {Computer Graphics Forum},
+  volume  = {45},
+  number  = {7},
+  year    = {2026}
+}</pre>
+          </div>
+        </section>
+
+      </main>
+
+    </div><!-- /.wrap -->
+  </div><!-- /.content -->
+</div><!-- /.page -->
+
+<script>
+  // ===== Video carousel =====
+  // To add a video, set `src` to its path and provide a matching JPG poster.
+  // Leave `src` empty ("") to show a placeholder box until the video is ready.
+  const SLIDES = [
+    { src: "assets/videos/stand.mp4", title: "Stand", caption: "Source motion, GMR, OmniRetarget, and our result." },
+    { src: "assets/videos/jump.mp4", title: "Jump", caption: "Source motion and retargeting comparisons." },
+    { src: "assets/videos/dance.mp4", title: "Dance", caption: "Retargeting comparisons during a dance sequence." },
+    { src: "assets/videos/cartwheel.mp4", title: "Cartwheel", caption: "Source motion and retargeting comparisons." },
+  ];
+
+  (function initCarousel() {
+    const track = document.getElementById("carousel-track");
+    const dots = document.getElementById("carousel-dots");
+    const counter = document.getElementById("carousel-counter");
+    const prevBtn = document.getElementById("carousel-prev");
+    const nextBtn = document.getElementById("carousel-next");
+    const root = document.getElementById("result-carousel");
+    let index = 0;
+
+    SLIDES.forEach((s, i) => {
+      const slide = document.createElement("div");
+      slide.className = "slide";
+
+      if (s.src) {
+        const v = document.createElement("video");
+        v.src = s.src; v.poster = s.src.replace(/\.mp4$/, ".jpg"); v.setAttribute("aria-label", s.title + " motion comparison"); v.controls = true; v.muted = true; v.loop = true;
+        v.playsInline = true; v.preload = "metadata";
+        slide.appendChild(v);
+      } else {
+        const ph = document.createElement("div");
+        ph.className = "placeholder";
+        ph.innerHTML =
+          `<span class="ph-title">${s.title}</span>` +
+          `<span>Motion comparison · Video forthcoming</span>`;
+        slide.appendChild(ph);
+      }
+
+      const cap = document.createElement("div");
+      cap.className = "slide-caption";
+      cap.innerHTML = `<strong>${s.title}.</strong> ${s.caption}`;
+      slide.appendChild(cap);
+      track.appendChild(slide);
+
+      const dot = document.createElement("button");
+      dot.className = "dot";
+      dot.setAttribute("aria-label", `Go to video ${i + 1}`);
+      dot.addEventListener("click", () => goTo(i));
+      dots.appendChild(dot);
+    });
+
+    function goTo(i) {
+      const n = SLIDES.length;
+      index = (i + n) % n;
+      track.style.transform = `translateX(-${index * 100}%)`;
+      [...dots.children].forEach((d, k) => { d.classList.toggle("active", k === index); d.setAttribute("aria-current", k === index ? "true" : "false"); });
+      [...track.children].forEach((slide, k) => { slide.inert = k !== index; slide.setAttribute("aria-hidden", String(k !== index)); });
+      counter.textContent = `${index + 1} / ${n}`;
+      [...track.querySelectorAll("video")].forEach((v) => {
+        const visible = v.closest(".slide") === track.children[index];
+        if (visible) { v.play().catch(() => {}); } else { v.pause(); }
+      });
+    }
+
+    prevBtn.addEventListener("click", () => goTo(index - 1));
+    nextBtn.addEventListener("click", () => goTo(index + 1));
+
+    // keyboard navigation only while the carousel is on screen
+    let inView = false;
+    new IntersectionObserver((es) => { inView = es[0].isIntersecting; }, { threshold: 0.3 }).observe(root);
+    document.addEventListener("keydown", (e) => {
+      if (!inView) return;
+      if (e.key === "ArrowLeft") goTo(index - 1);
+      if (e.key === "ArrowRight") goTo(index + 1);
+    });
+
+    let startX = null;
+    track.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener("touchend", (e) => {
+      if (startX === null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) goTo(index + (dx < 0 ? 1 : -1));
+      startX = null;
+    });
+
+    goTo(0);
+  })();
+
+  // Keep the current section marked without changing the scroll position.
+  (function initSectionNav() {
+    const nav = document.querySelector('.section-nav');
+    const links = [...nav.querySelectorAll('a')];
+    const sections = links.map(link => document.querySelector(link.getAttribute('href')));
+    function update() {
+      const marker = nav.getBoundingClientRect().height + 80;
+      let active = null;
+      sections.forEach(section => {
+        if (section.getBoundingClientRect().top <= marker) active = section.id;
+      });
+      if (window.scrollY > 0 && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+        active = sections[sections.length - 1].id;
+      }
+      links.forEach(link => {
+        if (link.hash === '#' + active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    }
+    let pending = false;
+    window.addEventListener('scroll', () => {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(() => { update(); pending = false; });
+    }, { passive:true });
+    window.addEventListener('resize', update);
+    window.addEventListener('load', update);
+    update();
+  })();
+
+  // ===== Copy BibTeX =====
+  (function initCopy() {
+    const btn = document.getElementById("copy-bib");
+    const txt = document.getElementById("bib-text");
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(txt.textContent);
+        btn.textContent = "Copied";
+      } catch { btn.textContent = "Select & copy"; }
+      setTimeout(() => { btn.textContent = "Copy"; }, 1600);
+    });
+  })();
+</script>
+</body>
+</html>
