@@ -32,9 +32,7 @@
     .affiliation { font-size:13px; color:var(--muted); margin-bottom:23px; }
     .lab-link { display:block; width:210px; max-width:65%; margin:0 auto 26px; }
     .lab-link img { display:block; width:100%; height:auto; }
-    #results > h3 { margin-top:40px; margin-bottom:12px; }
-    #results .method-points { margin-top:32px; row-gap:24px; }
-    #results .method-points h3 { margin-bottom:12px; }
+    #method > h3, #results > h3 { margin-top:40px; margin-bottom:12px; }
     .links { display:flex; justify-content:center; }
     .btn { display:inline-flex; align-items:center; gap:9px; padding:7px 16px; border:1px solid #cccccc; border-radius:4px; font-size:12px; color:var(--accent); }
     .btn:hover { background:var(--ph-bg); text-decoration:none; }
@@ -45,13 +43,7 @@
     p { margin:0 0 16px; color:var(--fg-2); }
     p:last-child { margin-bottom:0; }
     strong { font-weight:600; color:var(--fg); }
-    .key-points { margin:0 0 18px; padding-left:20px; color:var(--fg-2); }
-    .key-points li { padding-left:3px; margin-bottom:8px; }
-    .key-points li:last-child { margin-bottom:0; }
-    .key-points li::marker { color:var(--muted); font-size:.8em; }
     .abstract .lead { font-size:14px; line-height:1.9; }
-    .method-points { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
-    .method-points h3 { margin-top:8px; }
     figure { margin:0 0 25px; }
     #method figure { padding-top:12px; margin-bottom:37px; }
     .method-figure-art { margin-bottom:12px; padding:16px; border:1px solid var(--line); border-radius:12px; background:var(--ph-bg); isolation:isolate; overflow:hidden; }
@@ -100,7 +92,7 @@
     pre { overflow-x:auto; margin:0; padding:48px 22px 22px; font:11px/1.8 ui-monospace,monospace; color:var(--fg-2); }
     .copy { position:absolute; right:12px; top:10px; padding:3px 9px; border:1px solid #d0d0d0; border-radius:3px; background:transparent; color:var(--muted); font-size:11px; }
     @media(min-width:1000px) { .abstract { display:grid; grid-template-columns:140px 1fr; gap:32px; } }
-    @media(max-width:600px) { .content { padding:0 22px; } .hero { padding:54px 0 38px; } .venue { font-size:9px; letter-spacing:.04em; } .venue i { margin-left:5px; margin-right:5px; } section { padding:40px 0; } .method-points { grid-template-columns:1fr; gap:8px; } .authors { gap:20px; font-size:14px; } th,td { padding:10px; } h2 { font-size:21px; } }
+    @media(max-width:600px) { .content { padding:0 22px; } .hero { padding:54px 0 38px; } .venue { font-size:9px; letter-spacing:.04em; } .venue i { margin-left:5px; margin-right:5px; } section { padding:40px 0; } .authors { gap:20px; font-size:14px; } th,td { padding:10px; } h2 { font-size:21px; } }
     @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .carousel-track { transition:none; } }
   </style>
 </head>
@@ -185,32 +177,28 @@
             <figcaption>The refinement network adjusts the reference using the character’s current state. The policy tracks the refined motion in simulation.</figcaption>
           </figure>
 
-          <ul class="key-points">
-            <li><strong>Online refinement.</strong> Adapt retargeted references to the target character’s dynamics during RL training.</li>
-            <li><strong>State-aware offsets.</strong> Predict root-pose and joint-angle adjustments from the reference motion and the simulated character’s state.</li>
-          </ul>
-          <div class="method-points">
-            <div><h3>Preserve the motion, improve tracking</h3><ul class="key-points">
-            <li>Balance motion fidelity with trackability.</li>
-            <li>Keep offsets small and smooth over time.</li>
-          </ul></div>
-            <div><h3>Stabilize joint training</h3><ul class="key-points">
-            <li><strong>Warm-up.</strong> Train the policy before enabling refinement.</li>
-            <li><strong>Early termination.</strong> Use the original reference to limit drift from the source motion.</li>
-          </ul></div>
-          </div>
+          <h3>Motion Refinement Network</h3>
+          <p>The motion refinement network observes the current reference pose and the proprioceptive state of the simulated character, and predicts displacements for the joint angles, root position, and root rotation. The policy uses the refined reference as its tracking target in physical simulation.</p>
+
+          <h3>Optimization Objectives</h3>
+          <p>The refinement network is trained with an objective separate from the policy optimization, consisting of four terms:</p>
+          <p><strong>Motion Fidelity Loss.</strong> A dead-zone quadratic loss permits bounded deviations from the original reference while penalizing larger changes in body positions and rotations to preserve the semantic content of the source motion.</p>
+          <p><strong>Tracking Loss.</strong> This loss minimizes the difference between the refined reference and the simulated character’s body pose, guiding refinement toward poses that are physically achievable for the target character.</p>
+          <p><strong>Smoothness Loss.</strong> This loss penalizes changes in the predicted displacement between consecutive timesteps to encourage temporally consistent refinement.</p>
+          <p><strong>Regularization Term.</strong> This term penalizes the magnitude of the network output to discourage unnecessarily large displacements and keep refinement minimal.</p>
+
+          <h3>Training Techniques</h3>
+          <p><strong>Alternating Training with Warming-up.</strong> The refinement network is frozen during the initial training iterations so that the policy can learn to track the original references. After this phase, the refinement network is updated alongside the policy using its own objective.</p>
+          <p><strong>Early Termination.</strong> The termination criterion measures deviation from the original reference rather than the refined reference, preventing refinement from allowing the character to drift into undesirable states without ending the episode.</p>
         </section>
 
         <!-- ================= RESULTS ================= -->
         <section id="results">
           <h2>Results</h2>
 
-          <ul class="key-points">
-            <li><strong>Dataset and robots.</strong> AMASS <a class="citation" href="#ref-amass" aria-label="Reference 1: AMASS">[1]</a> motions; Unitree H1-2 and G1.</li>
-            <li><strong>Baselines.</strong> ProtoMotions <a class="citation" href="#ref-protomotions" aria-label="Reference 2: ProtoMotions">[2]</a>, GMR <a class="citation" href="#ref-gmr" aria-label="Reference 3: GMR">[3]</a>, and OmniRetarget <a class="citation" href="#ref-omniretarget" aria-label="Reference 4: OmniRetarget">[4]</a>.</li>
-          </ul>
+          <h3>Experimental Setup</h3>
+          <p>We evaluate on AMASS <a class="citation" href="#ref-amass" aria-label="Reference 1: AMASS">[1]</a> motions retargeted to the Unitree H1-2 and G1 robots. The baselines are ProtoMotions <a class="citation" href="#ref-protomotions" aria-label="Reference 2: ProtoMotions">[2]</a>, GMR <a class="citation" href="#ref-gmr" aria-label="Reference 3: GMR">[3]</a>, and OmniRetarget <a class="citation" href="#ref-omniretarget" aria-label="Reference 4: OmniRetarget">[4]</a>; the motion obtained through physical simulation is used as our retargeting output.</p>
 
-          
           <div class="carousel" id="result-carousel" aria-roledescription="carousel" aria-label="Motion comparisons">
             <div class="carousel-viewport">
               <div class="carousel-track" id="carousel-track"></div>
@@ -231,17 +219,11 @@
             </div>
           </div>
 
-          <h3>More physically plausible motion</h3>
-          <ul class="key-points">
-            <li>Eliminates ground penetration across the evaluated baselines on both robots.</li>
-            <li>Reduces foot floating.</li>
-          </ul>
-          <h3>Better tracking with reliable references</h3>
-          <ul class="key-points">
-            <li><strong>GMR:</strong> tracking success improves from 64.5% to 71.1%.</li>
-            <li><strong>OmniRetarget:</strong> tracking success improves from 62.1% to 72.3%.</li>
-            <li><strong>ProtoMotions:</strong> gains remain limited.</li>
-          </ul>
+          <h3>Physical Plausibility</h3>
+          <p>Our method eliminates ground penetration across the evaluated baselines on both robots and generally reduces the occurrence and height of foot floating. With OmniRetarget on H1-2, the floating rate increases slightly, from 4.75% to 5.08%, while its mean height decreases from 2.21 cm to 0.34 cm.</p>
+
+          <h3>Tracking Performance</h3>
+          <p>On the H1-2 test split, tracking success increases from 64.5% to 71.1% with GMR and from 62.1% to 72.3% with OmniRetarget. Improvements are less pronounced with ProtoMotions, whose initial references frequently contain airborne poses that are difficult to track.</p>
           <div class="table-wrap">
             <table>
               <thead>
@@ -258,31 +240,20 @@
             </table>
           </div>
           <p class="table-note">H1-2 test split; mean over 10 evaluation rollouts. Higher success and lower errors are better.</p>
-          <div class="method-points">
-            <div><h3>Adaptation to extreme changes</h3><ul class="key-points">
-            <li>Tested on an H1-2 with half-length legs and a 20 kg backpack.</li>
-            <li>Enables stable training where the unrefined reference fails.</li>
-          </ul></div>
-            <div><h3>A trade-off in motion fidelity</h3><ul class="key-points">
-            <li>Participants rated source similarity higher than OmniRetarget, but lower than GMR.</li>
-            <li>Better physical plausibility does not always mean greater perceived similarity.</li>
-          </ul></div>
-          </div>
+          <h3>Faithfulness to the Source Motion</h3>
+          <p>In a study with 20 participants, perceived similarity to the source motion was rated on a five-point scale. Our method applied to GMR received a mean score of 3.19, compared with 2.44 for OmniRetarget and 4.09 for GMR, indicating a trade-off between physical plausibility and perceived motion fidelity.</p>
+
+          <h3>Robustness to Extreme Morphologies</h3>
+          <p>We also evaluate an H1-2 with half-length legs and a 20 kg backpack. Refinement enables stable training in this setting, whereas training with the unrefined reference fails to converge.</p>
         </section>
 
         <!-- ================= CONCLUSION ================= -->
         <section id="conclusion">
           <h2>Conclusion</h2>
-          <ul class="key-points">
-            <li>Jointly adapting the reference and control policy improves physical plausibility.</li>
-            <li>Refinement helps accommodate large changes in body proportions and payload.</li>
-          </ul>
+          <p>We present a motion refinement network that adaptively adjusts retargeted references during RL training. Joint training with the control policy improves physical plausibility and supports retargeting across substantial differences in morphology and physical properties.</p>
+
           <h3>Limitations</h3>
-          <ul class="key-points">
-            <li>Output quality depends on the initial reference.</li>
-            <li>Refinement adds roughly 20% to training time.</li>
-            <li>Brief foot floating can remain in difficult motions.</li>
-          </ul>
+          <p>The quality of the refined motion depends on the initial reference, and the additional network increases training time by approximately 20%. Brief foot floating can remain in difficult motions.</p>
           <figure class="limitation-video">
             <video src="assets/videos/limitation.mp4" poster="assets/videos/limitation.jpg" width="1920" height="1080" controls muted loop playsinline preload="metadata" aria-label="Limitation example comparing the source motion and our result"></video>
             <figcaption>Failure case: source motion (left) and our result (right).</figcaption>
